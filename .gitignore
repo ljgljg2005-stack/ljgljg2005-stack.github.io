@@ -5,3 +5,6 @@ live_check*.png
 live_shot.py
 _live_fold.png
 live_*.png
+
+# metaverse verification shots
+live_metaverse_*.png

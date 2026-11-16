@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="ko" class="room">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>숏폼커머스교육 3D 쇼룸 | 걸어 다니는 상담·전시 공간</title>
+<meta name="description" content="숏폼커머스교육 3D 웹 쇼룸. 커리큘럼·사례 채널·1:1 과외 상담 데스크를 폰에서 바로 걸어 다니며 둘러보세요. 잘하실 때까지 무한 AS.">
+<meta name="theme-color" content="#0D1B2A">
+<meta property="og:title" content="숏폼커머스교육 3D 쇼룸">
+<meta property="og:description" content="커리큘럼·사례 채널·1:1 상담 데스크를 3D 공간에서 걸어 다니며 둘러보세요. 잘하실 때까지 무한 AS.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ljgljg2005-stack.github.io/metaverse/">
+<meta property="og:site_name" content="숏폼커머스교육">
+<meta property="og:locale" content="ko_KR">
+<link rel="canonical" href="https://ljgljg2005-stack.github.io/metaverse/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230D1B2A'/%3E%3Cpath d='M12 9l12 7-12 7z' fill='%2338BDF8'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;900&display=swap">
+<style>
+  :root{
+    --navy:#0D1B2A; --navy-deep:#060D16; --cyan:#38BDF8; --pink:#F472B6; --gold:#FBBF24;
+    --ink:#E8F3FF; --muted:#9DB2CC; --line:rgba(56,189,248,.24);
+    --font:"Pretendard","Pretendard Variable","Noto Sans KR",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans CJK KR",sans-serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;height:100%;background:var(--navy-deep);color:var(--ink);font-family:var(--font);overflow:hidden;overscroll-behavior:none}
+  body{position:fixed;inset:0;width:100%;height:100%;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+  #scene{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;cursor:grab;z-index:0}
+  #scene.grabbing{cursor:grabbing}
+  .vignette{position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:radial-gradient(120% 90% at 50% 45%,transparent 45%,rgba(3,7,12,.55) 100%),
+               linear-gradient(180deg,rgba(4,9,15,.55),transparent 22%,transparent 74%,rgba(4,9,15,.62))}
+  button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit;letter-spacing:inherit}
+  a{color:inherit;text-decoration:none}
+
+  /* ── top bar ── */
+  .top{position:absolute;top:0;left:0;right:0;z-index:20;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+    padding:calc(10px + env(safe-area-inset-top)) 12px 10px;pointer-events:none}
+  .top > *{pointer-events:auto}
+  .brand{display:inline-flex;align-items:center;gap:9px;padding:7px 13px 7px 9px;border-radius:999px;
+    background:rgba(9,20,33,.72);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    font-weight:800;font-size:13px;box-shadow:0 10px 30px -18px #000}
+  .brand svg{width:21px;height:21px;flex:none}
+  .brand .tag{font-size:9.5px;font-weight:900;letter-spacing:.12em;color:var(--cyan);border:1px solid rgba(56,189,248,.45);
+    border-radius:6px;padding:2px 5px;line-height:1.2}
+  .top-r{display:flex;align-items:center;gap:7px}
+  .icon-btn{width:36px;height:36px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;
+    background:rgba(9,20,33,.72);border:1px solid var(--line);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    color:#CFE3F7;font-size:15px;font-weight:900;transition:.18s}
+  .icon-btn:hover{background:rgba(56,189,248,.16);color:#fff}
+  .pill-kakao{display:inline-flex;align-items:center;gap:6px;padding:9px 14px;border-radius:999px;
+    font-size:12.5px;font-weight:900;color:#fff;
+    background:linear-gradient(135deg,#F472B6 0%,#c04bd6 52%,#7c5cff 100%);
+    box-shadow:0 10px 26px -10px rgba(244,114,182,.85);transition:transform .16s,box-shadow .2s}
+  .pill-kakao:hover{box-shadow:0 14px 30px -10px rgba(244,114,182,1)}
+  .pill-kakao:active{transform:translateY(1px)}
+  .pill-kakao svg{width:15px;height:15px;flex:none}
+
+  /* ── joystick ── */
+  #pad{position:absolute;z-index:19;left:calc(14px + env(safe-area-inset-left));bottom:calc(16px + env(safe-area-inset-bottom));
+    width:108px;height:108px;border-radius:50%;touch-action:none;display:none;
+    background:radial-gradient(circle at 50% 50%,rgba(56,189,248,.14),rgba(9,20,33,.55) 70%);
+    border:1px solid rgba(56,189,248,.32);box-shadow:0 0 30px -10px rgba(56,189,248,.6) inset,0 14px 30px -20px #000;
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  html.compact #pad{display:block}
+  #stick{position:absolute;left:50%;top:50%;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle at 38% 32%,rgba(244,114,182,.95),rgba(56,189,248,.72));
+    box-shadow:0 0 20px rgba(56,189,248,.7),0 6px 14px -6px #000;transition:transform .05s linear}
+  #pad::after{content:"이동";position:absolute;left:50%;bottom:-17px;transform:translateX(-50%);font-size:10px;font-weight:800;
+    letter-spacing:.14em;color:rgba(157,178,204,.75)}
+
+  /* ── teleport bar ── */
+  .tp{position:absolute;z-index:20;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));
+    display:flex;gap:5px;padding:6px;border-radius:17px;background:rgba(9,20,33,.8);border:1px solid var(--line);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 18px 40px -26px #000;
+    max-width:calc(100vw - 24px);overflow-x:auto;scrollbar-width:none}
+  .tp::-webkit-scrollbar{display:none}
+  html.compact .tp{left:calc(14px + 108px + 12px);right:12px;transform:none;max-width:none}
+  .tp button{flex:0 0 auto;padding:9px 12px;border-radius:11px;font-size:12px;font-weight:800;color:#CFE3F7;
+    background:rgba(255,255,255,.05);border:1px solid transparent;white-space:nowrap;transition:.16s}
+  .tp button i{font-style:normal;opacity:.6;margin-right:3px;font-size:10.5px}
+  .tp button:hover{background:rgba(56,189,248,.14);color:#fff}
+  .tp button.on{color:#fff;border-color:rgba(56,189,248,.62);
+    background:linear-gradient(135deg,rgba(56,189,248,.3),rgba(244,114,182,.28));box-shadow:0 0 22px -8px rgba(56,189,248,.9)}
+
+  /* ── hints ── */
+  .hintbar{position:absolute;z-index:18;left:50%;transform:translateX(-50%);bottom:calc(74px + env(safe-area-inset-bottom));
+    display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;font-size:11.5px;font-weight:700;color:#B9CEE4;
+    background:rgba(9,20,33,.62);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    pointer-events:none;transition:opacity .4s;max-width:calc(100vw - 30px);text-align:center;line-height:1.4}
+  .hintbar b{color:#EAF6FF}
+  .hintbar kbd{font-family:inherit;font-size:10.5px;font-weight:900;padding:1px 5px;border-radius:5px;background:rgba(56,189,248,.16);
+    border:1px solid rgba(56,189,248,.34);color:#CDEEFF}
+  html.compact .hintbar{bottom:calc(146px + env(safe-area-inset-bottom))}
+  .nearhint{position:absolute;z-index:18;left:50%;bottom:calc(140px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(6px);
+    padding:8px 15px;border-radius:999px;font-size:12px;font-weight:800;color:#04121d;white-space:nowrap;
+    background:linear-gradient(135deg,#8EE7FF,#38BDF8);box-shadow:0 0 26px -4px rgba(56,189,248,.9);
+    opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+  .nearhint.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  html.compact .nearhint{bottom:calc(176px + env(safe-area-inset-bottom))}
+  html.card-open #pad,html.card-open .tp,html.card-open .hintbar,html.card-open .nearhint{opacity:0;pointer-events:none}
+
+  /* ── fade for teleport ── */
+  .fade{position:absolute;inset:0;z-index:30;background:#060D16;opacity:0;pointer-events:none;transition:opacity .26s ease}
+  .fade.on{opacity:1}
+
+  /* ── card ── */
+  .cardwrap{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:16px;
+    background:radial-gradient(700px 460px at 50% 38%,rgba(6,13,22,.55),rgba(3,7,12,.84));
+    backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+  .cardwrap[hidden]{display:none}
+  .card{position:relative;width:min(568px,100%);max-height:min(88vh,760px);overflow:auto;-webkit-overflow-scrolling:touch;
+    border-radius:22px;padding:22px 22px 20px;
+    background:linear-gradient(165deg,rgba(17,34,53,.98),rgba(8,17,28,.99));
+    border:1px solid rgba(56,189,248,.3);
+    box-shadow:0 40px 90px -40px #000,inset 0 1px 0 rgba(255,255,255,.06);animation:pop .2s ease-out}
+  @keyframes pop{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+  html.compact .cardwrap{align-items:flex-end;padding:10px}
+  html.compact .card{width:100%;max-height:82vh;border-radius:20px 20px 16px 16px;padding:20px 18px 16px}
+  .c-close{position:absolute;top:12px;right:12px;width:32px;height:32px;border-radius:999px;font-size:16px;font-weight:900;
+    color:#B9CEE4;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center}
+  .c-close:hover{background:rgba(255,255,255,.14);color:#fff}
+  .c-kicker{font-size:10.5px;font-weight:900;letter-spacing:.16em;color:var(--cyan);text-transform:uppercase}
+  .c-title{margin:8px 0 0;font-size:23px;font-weight:900;letter-spacing:-.03em;line-height:1.3}
+  .c-sub{margin:8px 0 0;font-size:13.5px;line-height:1.65;color:var(--muted)}
+  .c-list{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:9px}
+  .c-list li{display:flex;gap:11px;padding:11px 12px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+  .c-list .n{flex:none;font-size:12px;font-weight:900;color:var(--cyan);letter-spacing:.04em;padding-top:2px}
+  .c-list b{display:block;font-size:14px;font-weight:800;letter-spacing:-.02em;color:#EAF6FF}
+  .c-list span{display:block;margin-top:3px;font-size:12.5px;line-height:1.55;color:#9DB2CC}
+  .c-list li.gold .n{color:var(--gold)}
+  .c-note{margin:13px 0 0;font-size:11.5px;color:#8FA6C0;text-align:center;letter-spacing:-.005em}
+  .c-actions{display:grid;gap:8px;margin-top:16px}
+  .c-btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 16px;border-radius:13px;font-size:14.5px;font-weight:900;
+    border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:#E8F3FF;transition:.16s}
+  .c-btn:hover{background:rgba(255,255,255,.1)}
+  .c-btn.primary{color:#fff;border:0;background:linear-gradient(135deg,#F472B6 0%,#d24ea5 45%,#8b5cf6 100%);
+    box-shadow:0 14px 34px -14px rgba(244,114,182,.95)}
+  .c-btn.primary:hover{box-shadow:0 18px 40px -14px rgba(244,114,182,1)}
+  .c-btn svg{width:16px;height:16px;flex:none}
+  .c-link{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 14px;border-radius:13px;
+    background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:.16s}
+  .c-link:hover{background:rgba(56,189,248,.1);border-color:rgba(56,189,248,.4)}
+  .c-link .l{display:flex;align-items:center;gap:10px;min-width:0}
+  .c-link .dot{width:9px;height:9px;border-radius:3px;flex:none}
+  .c-link b{font-size:13.5px;font-weight:800;display:block;color:#EAF6FF}
+  .c-link small{display:block;font-size:11.5px;color:#8FA6C0;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .c-link .go{font-size:11.5px;font-weight:900;color:var(--cyan);flex:none}
+  .c-id{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:10px;font-size:12px;color:#9DB2CC}
+  .c-id b{color:#EAF6FF;letter-spacing:.02em}
+  .c-id button{font-size:11.5px;font-weight:800;color:var(--cyan);padding:3px 9px;border-radius:999px;
+    border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.1)}
+
+  /* ── help panel ── */
+  .help{position:absolute;z-index:35;top:calc(56px + env(safe-area-inset-top));right:12px;width:min(300px,calc(100vw - 24px));
+    padding:16px;border-radius:18px;background:rgba(10,22,36,.96);border:1px solid rgba(56,189,248,.28);
+    box-shadow:0 30px 70px -30px #000;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);animation:pop .16s ease-out}
+  .help[hidden]{display:none}
+  .help h3{margin:0 0 10px;font-size:13px;font-weight:900;letter-spacing:-.01em}
+  .help dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:7px 10px;font-size:12px;color:#B9CEE4}
+  .help dt{font-weight:900;color:#EAF6FF;white-space:nowrap}
+  .help dd{margin:0;line-height:1.5}
+  .help .foot{margin-top:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,.08);font-size:11.5px;color:#8FA6C0;line-height:1.55}
+  .help a{color:var(--cyan);font-weight:800}
+
+  /* ── loading ── */
+  .loading{position:absolute;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+    background:radial-gradient(900px 700px at 50% 45%,#0f2438,#060D16 70%);transition:opacity .5s ease}
+  .loading.done{opacity:0;pointer-events:none}
+  .loading .ring{width:52px;height:52px;border-radius:50%;border:2px solid rgba(56,189,248,.18);border-top-color:var(--cyan);
+    border-right-color:var(--pink);animation:spin 1s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .loading .lt{font-size:14px;font-weight:900;letter-spacing:-.01em}
+  .loading .ls{font-size:11.5px;color:#8FA6C0;letter-spacing:.02em}
+
+  /* ── fallback ── */
+  .fallback{position:absolute;inset:0;z-index:45;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+    padding:24px;text-align:center;background:radial-gradient(900px 700px at 50% 40%,#0f2438,#060D16 72%)}
+  .fallback.show{display:flex}
+  .fallback h2{margin:0;font-size:19px;font-weight:900;letter-spacing:-.03em}
+  .fallback p{margin:0;font-size:13px;line-height:1.65;color:#9DB2CC;max-width:420px}
+  .fallback .btns{display:grid;gap:8px;width:min(340px,100%);margin-top:6px}
+
+  .toast{position:fixed;z-index:60;left:50%;bottom:calc(120px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(10px);
+    padding:10px 16px;border-radius:999px;font-size:12.5px;font-weight:800;color:#04121d;background:#8EE7FF;
+    box-shadow:0 16px 34px -14px rgba(56,189,248,.9);opacity:0;pointer-events:none;transition:.24s}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<canvas id="scene" aria-label="숏폼커머스교육 3D 쇼룸"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+
+<header class="top">
+  <a class="brand" href="../" aria-label="숏폼커머스교육 홈페이지로">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <defs><linearGradient id="bt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38BDF8"/><stop offset="1" stop-color="#F472B6"/></linearGradient></defs>
+      <rect x="1.5" y="1.5" width="29" height="29" rx="9" fill="rgba(56,189,248,.12)" stroke="url(#bt)" stroke-width="1.6"/>
+      <path d="M12.5 9.4l10.2 6.1-10.2 6.1z" fill="url(#bt)"/>
+    </svg>
+    숏폼커머스교육
+    <span class="tag">3D 쇼룸</span>
+  </a>
+  <div class="top-r">
+    <button class="icon-btn" id="helpBtn" type="button" aria-label="조작 방법 보기">?</button>
+    <a class="pill-kakao" href="https://open.kakao.com/o/shDgTlXi" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.3 9 9 0 0 1-3.9-.9L3 20.5l1.6-4.6a8.1 8.1 0 0 1-1.1-4A8.4 8.4 0 0 1 12 3.5a8.4 8.4 0 0 1 9 8z"/></svg>
+      카톡 상담
+    </a>
+  </div>
+</header>
+
+<div class="help" id="help" hidden>
+  <h3>이동과 조작</h3>
+  <dl>
+    <dt>PC</dt><dd><b>W A S D</b> / 방향키 이동 · <b>Shift</b> 빠르게 · 마우스 드래그로 시점 회전</dd>
+    <dt>폰</dt><dd>왼쪽 아래 <b>조이스틱</b>으로 이동 · 화면을 드래그하면 시점이 돌아갑니다</dd>
+    <dt>부스</dt><dd>커리큘럼·사례·상담 부스를 <b>누르면</b> 상세 카드가 열립니다 (가까이 가면 자동으로 열려요)</dd>
+    <dt>바로가기</dt><dd>아래 <b>텔레포트</b> 버튼을 누르면 한 번에 그 자리로 이동합니다</dd>
+  </dl>
+  <div class="foot">3D가 무겁거나 보이지 않으면 <a href="../">일반 홈페이지</a>에서 모든 내용을 보실 수 있습니다.</div>
+</div>
+
+<div class="hintbar" id="hintbar">
+  <span id="hintText">가이드를 따라 부스를 둘러보세요 · <b>부스를 누르면</b> 상세 카드가 열립니다</span>
+</div>
+<div class="nearhint" id="nearhint">눌러서 자세히 보기</div>
+
+<div id="pad" aria-hidden="true"><div id="stick"></div></div>
+
+<nav class="tp" id="tp" aria-label="부스 바로가기">
+  <button type="button" data-spot="entrance" class="on"><i>◉</i>입구</button>
+  <button type="button" data-spot="curriculum"><i>01</i>커리큘럼</button>
+  <button type="button" data-spot="cases"><i>02</i>사례·채널</button>
+  <button type="button" data-spot="desk"><i>03</i>1:1 상담</button>
+</nav>
+
+<div class="cardwrap" id="cardwrap" hidden>
+  <div class="card" id="card" role="dialog" aria-modal="true" aria-labelledby="cardTitle"></div>
+</div>
+
+<div class="fade" id="fade"></div>
+
+<div class="loading" id="loading">
+  <div class="ring" aria-hidden="true"></div>
+  <div class="lt">3D 쇼룸을 준비하고 있습니다</div>
+  <div class="ls">잠시만 기다려 주세요</div>
+</div>
+
+<div class="fallback" id="fallback">
+  <h2>3D 쇼룸을 열 수 없습니다</h2>
+  <p>지금 브라우저에서 3D(WebGL)를 사용할 수 없습니다. 아래 버튼으로 바로 상담·채널을 확인하실 수 있습니다.</p>
+  <div class="btns">
+    <a class="c-btn primary" href="https://open.kakao.com/o/shDgTlXi" target="_blank" rel="noopener noreferrer">카톡으로 바로 상담하기</a>
+    <a class="c-btn" href="../">일반 홈페이지 보기</a>
+    <a class="c-btn" href="https://link.inpock.co.kr/shortformedu" target="_blank" rel="noopener noreferrer">인포크링크</a>
+    <a class="c-btn" href="https://smartstore.naver.com/shortformedu" target="_blank" rel="noopener noreferrer">스마트스토어</a>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap">
+  <h1>숏폼커머스교육 3D 웹 쇼룸</h1>
+  <p>커리큘럼, 사례 채널, 1:1 과외 상담 데스크를 3D 공간에서 둘러보세요. 잘하실 때까지 무한 AS.</p>
+</div>
+
+<noscript>
+  <div style="position:fixed;inset:0;z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;background:#060D16;text-align:center">
+    <b style="font-size:18px">숏폼커머스교육 3D 쇼룸</b>
+    <p style="color:#9DB2CC;font-size:13px;line-height:1.6">이 페이지는 자바스크립트가 필요합니다.<br>아래에서 바로 상담받으실 수 있습니다.</p>
+    <a style="padding:14px 18px;border-radius:12px;background:linear-gradient(135deg,#F472B6,#8b5cf6);color:#fff;font-weight:900" href="https://open.kakao.com/o/shDgTlXi">카톡으로 바로 상담하기</a>
+    <a style="color:#38BDF8;font-weight:800" href="../">일반 홈페이지 보기</a>
+  </div>
+</noscript>
+
+<script>
+  (function(){
+    try{
+      var compact = (window.matchMedia && matchMedia('(pointer: coarse)').matches) || navigator.maxTouchPoints > 0 || innerWidth < 820;
+      if(compact) document.documentElement.classList.add('compact');
+    }catch(e){}
+  })();
+</script>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js"
+  }
+}
+</script>
+
+<script type="module">
+const LINKS = {
+  kakao: 'https://open.kakao.com/o/shDgTlXi',
+  youtube: 'https://www.youtube.com/@%EC%98%81%EC%B0%A8-i4k',
+  inpock: 'https://link.inpock.co.kr/shortformedu',
+  smartstore: 'https://smartstore.naver.com/shortformedu',
+  home: '../'
+};
+const FONT = '"Noto Sans KR","Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans CJK KR",sans-serif';
+const $ = (s) => document.querySelector(s);
+const COMPACT = document.documentElement.classList.contains('compact') || innerWidth < 820;
+
+const el = {
+  loading: $('#loading'), fallback: $('#fallback'), cardwrap: $('#cardwrap'), card: $('#card'),
+  fade: $('#fade'), help: $('#help'), toast: $('#toast'), nearhint: $('#nearhint'),
+  pad: $('#pad'), stick: $('#stick'), tp: $('#tp'), hintbar: $('#hintbar'), hintText: $('#hintText')
+};
+
+function showFallback(msg){
+  try{ el.loading.classList.add('done'); }catch(e){}
+  el.fallback.classList.add('show');
+  if(msg) console.warn('[metaverse]', msg);
+}
+function toast(msg, ms){
+  el.toast.textContent = msg; el.toast.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(()=>el.toast.classList.remove('show'), ms||2200);
+}
+if(!(window.WebGLRenderingContext || window.WebGL2RenderingContext)){
+  showFallback('no webgl');
+}
+
+/* ── card content ── */
+const CARDS = {
+  curriculum: {
+    kicker: 'ZONE 01 · CURRICULUM',
+    title: '커리큘럼',
+    sub: '기획부터 배포까지, 실제로 팔리는 순서 그대로 배웁니다.',
+    body: `
+      <ol class="c-list">
+        <li><span class="n">01</span><div><b>AI 숏폼 기획·대본</b><span>팔릴 상품을 고르고, 15초 대본까지 AI로 뽑습니다.</span></div></li>
+        <li><span class="n">02</span><div><b>영상·음성·편집 자동화</b><span>촬영 없이 이미지·음성·자막을 붙여 한 편을 완성합니다.</span></div></li>
+        <li><span class="n">03</span><div><b>쿠팡·스마트스토어·11번가 상품 등록</b><span>상품 선정부터 등록 문구·이미지까지 실습으로 진행합니다.</span></div></li>
+        <li class="gold"><span class="n">04</span><div><b>13채널 + 밴드 20곳 원클릭 배포</b><span>한 번 만든 영상을 13개 채널과 밴드 20곳에 동시에 배포합니다.</span></div></li>
+      </ol>
+      <p class="c-note">왕초보 환영 · 1:1 맞춤 진행 · 실전 위주 수업</p>`,
+    actions: [
+      { label: '카톡으로 바로 상담하기', href: LINKS.kakao, primary: true },
+      { label: '홈페이지에서 자세히 보기', href: LINKS.home + '#curriculum' }
+    ]
+  },
+  cases: {
+    kicker: 'ZONE 02 · PROOF & CHANNEL',
+    title: '사례 · 채널',
+    sub: '말로만 하는 수업이 아닙니다. 같은 방식으로 만든 결과물이 실제로 올라가 있습니다.',
+    body: `
+      <div style="display:grid;gap:8px;margin-top:14px">
+        <a class="c-link" href="${LINKS.youtube}" target="_blank" rel="noopener noreferrer">
+          <span class="l"><span class="dot" style="background:#F472B6"></span><span><b>유튜브 · 영차 채널</b><small>youtube.com/@영차-i4k</small></span></span>
+          <span class="go">바로가기 →</span>
+        </a>
+        <a class="c-link" href="${LINKS.inpock}" target="_blank" rel="noopener noreferrer">
+          <span class="l"><span class="dot" style="background:#38BDF8"></span><span><b>인포크링크</b><small>link.inpock.co.kr/shortformedu</small></span></span>
+          <span class="go">바로가기 →</span>
+        </a>
+        <a class="c-link" href="${LINKS.smartstore}" target="_blank" rel="noopener noreferrer">
+          <span class="l"><span class="dot" style="background:#FBBF24"></span><span><b>스마트스토어</b><small>smartstore.naver.com/shortformedu</small></span></span>
+          <span class="go">바로가기 →</span>
+        </a>
+      </div>`,
+    actions: [
+      { label: '카톡으로 바로 상담하기', href: LINKS.kakao, primary: true }
+    ]
+  },
+  desk: {
+    kicker: 'ZONE 03 · 1:1 TUTORING DESK',
+    title: '잘하실 때까지 무한 AS',
+    sub: '수업이 끝나도 혼자 막히는 부분은 언제든 다시 봐 드립니다. 완성될 때까지 함께 갑니다.',
+    body: `
+      <ol class="c-list">
+        <li><span class="n">1</span><div><b>오픈채팅 열기</b><span>아래 버튼을 누르면 카카오톡 상담 오픈채팅방이 바로 열립니다.</span></div></li>
+        <li><span class="n">2</span><div><b>한 줄만 남기기</b><span>"과외 문의"라고 남겨 주세요. 운영 중인 채널이나 판매 상품을 알려 주시면 더 정확히 안내드립니다.</span></div></li>
+      </ol>
+      <div class="c-id">오픈채팅이 안 열리면 카톡 ID <b>soojibi</b> <button type="button" data-copy>복사</button></div>`,
+    actions: [
+      { label: '카톡 1:1 오픈채팅 열기', href: LINKS.kakao, primary: true },
+      { label: '홈페이지 상담 안내 보기', href: LINKS.home + '#contact' }
+    ]
+  }
+};
+
+function renderCard(zone){
+  const c = CARDS[zone]; if(!c) return '';
+  const actions = (c.actions || []).map(a => `
+    <a class="c-btn${a.primary ? ' primary' : ''}" href="${a.href}"${a.external === false ? '' : ' target="_blank" rel="noopener noreferrer"'}>${a.label}</a>`).join('');
+  return `<button class="c-close" type="button" aria-label="닫기">✕</button>
+    <div class="c-kicker">${c.kicker}</div>
+    <h2 class="c-title" id="cardTitle">${c.title}</h2>
+    <p class="c-sub">${c.sub}</p>
+    ${c.body}
+    <div class="c-actions">${actions}</div>`;
+}
+function bindCard(){
+  const copy = el.card.querySelector('[data-copy]');
+  if(copy) copy.addEventListener('click', ()=>copyId());
+  el.card.querySelector('.c-close').addEventListener('click', ()=>closeCard(true));
+}
+function copyId(){
+  const t = 'soojibi';
+  const done = ()=>toast('카톡 ID soojibi 가 복사되었습니다');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(done).catch(fallbackCopy);
+  } else fallbackCopy();
+  function fallbackCopy(){
+    try{
+      const ta = document.createElement('textarea');
+      ta.value = t; ta.setAttribute('readonly',''); ta.style.position='absolute'; ta.style.left='-9999px';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); done();
+    }catch(e){ toast('카톡 ID는 soojibi 입니다'); }
+  }
+}
+
+/* ── boot ── */
+let openZone = null;
+let api = null;
+
+function openCard(zone, manual){
+  if(api && api.cardOpen) return;
+  if(!CARDS[zone]) return;
+  openZone = zone;
+  el.card.innerHTML = renderCard(zone);
+  bindCard();
+  el.card.scrollTop = 0;
+  el.cardwrap.hidden = false;
+  document.documentElement.classList.add('card-open');
+  if(api){ api.cardOpen = true; api.releaseJoy(); }
+  el.nearhint.classList.remove('show');
+}
+function closeCard(user){
+  if(el.cardwrap.hidden) return;
+  el.cardwrap.hidden = true;
+  document.documentElement.classList.remove('card-open');
+  if(api){ api.cardOpen = false; if(user && openZone) api.suppress(openZone); }
+  openZone = null;
+}
+el.cardwrap.addEventListener('click', (e)=>{ if(e.target === el.cardwrap) closeCard(true); });
+document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ closeCard(true); el.help.hidden = true; } });
+
+/* help */
+$('#helpBtn').addEventListener('click', (e)=>{ e.stopPropagation(); el.help.hidden = !el.help.hidden; });
+document.addEventListener('click', (e)=>{
+  if(!el.help.hidden && !el.help.contains(e.target) && e.target.id !== 'helpBtn') el.help.hidden = true;
+});
+
+/* wait briefly for the brand webfont so canvas signs use it, then load three */
+const fontsReady = (document.fonts && document.fonts.load)
+  ? Promise.race([
+      Promise.all([
+        document.fonts.load('900 100px "Noto Sans KR"'),
+        document.fonts.load('700 30px "Noto Sans KR"')
+      ]).catch(()=>{}),
+      new Promise(r=>setTimeout(r, 1400))
+    ])
+  : Promise.resolve();
+
+fontsReady.then(()=>import('three')).then((THREE)=>{
+  try{ boot(THREE); }
+  catch(err){ console.error(err); showFallback('boot failed: ' + err); }
+}).catch((err)=>{ showFallback('three load failed: ' + err); });
+
+function boot(THREE){
+  const MAXA = 4;
+  let renderer;
+  try{
+    renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('scene'), antialias: !COMPACT, powerPreference: 'high-performance', alpha: false });
+  }catch(err){ showFallback('renderer failed'); return; }
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, COMPACT ? 1.75 : 2));
+  renderer.setSize(innerWidth, innerHeight, false);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.08;
+  const aniso = Math.min(MAXA, renderer.capabilities.getMaxAnisotropy());
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x060D16);
+  scene.fog = new THREE.Fog(0x08131f, 15, 42);
+
+  const camera = new THREE.PerspectiveCamera(COMPACT ? 74 : 62, innerWidth / innerHeight, 0.06, 90);
+  camera.rotation.order = 'YXZ';
+
+  const C = { navy: 0x0D1B2A, cyan: 0x38BDF8, pink: 0xF472B6, gold: 0xFBBF24, deep: 0x060D16 };
+  const HEX = { cyan: '#38BDF8', pink: '#F472B6', gold: '#FBBF24' };
+  const ROOM_R = 16, WALL_H = 9.2, EYE = 1.62;
+
+  /* ── helpers ── */
+  const rgba = (hex, a) => {
+    const n = parseInt(hex.slice(1), 16);
+    return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+  };
+  const rr = (ctx, x, y, w, h, r) => {
+    r = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  };
+  function canvasTex(w, h, draw, repX, repY){
+    const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+    const ctx = cv.getContext('2d'); draw(ctx, w, h);
+    const t = new THREE.CanvasTexture(cv);
+    t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = aniso;
+    if(repX || repY){ t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(repX || 1, repY || 1); }
+    return t;
+  }
+  function wrapLines(ctx, text, maxW){
+    const out = []; let line = '';
+    for(const ch of text){
+      const test = line + ch;
+      if(ctx.measureText(test).width > maxW && line){ out.push(line); line = ch; }
+      else line = test;
+    }
+    if(line) out.push(line);
+    return out;
+  }
+  function panelBase(ctx, w, h, accent){
+    const g = ctx.createLinearGradient(0, 0, w, h);
+    g.addColorStop(0, 'rgba(17,34,53,.99)'); g.addColorStop(1, 'rgba(7,15,25,.99)');
+    ctx.fillStyle = g; rr(ctx, 4, 4, w - 8, h - 8, 26); ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.07)'; ctx.lineWidth = 2; rr(ctx, 5, 5, w - 10, h - 10, 25); ctx.stroke();
+    ctx.save(); rr(ctx, 4, 4, w - 8, h - 8, 26); ctx.clip();
+    const ag = ctx.createLinearGradient(0, 0, w * .8, 0);
+    ag.addColorStop(0, accent); ag.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.globalAlpha = .8; ctx.fillStyle = ag; ctx.fillRect(0, 0, w, 4);
+    const rg = ctx.createRadialGradient(w * .88, h * .06, 0, w * .88, h * .06, h * .95);
+    rg.addColorStop(0, rgba(accent, 0.2)); rg.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.globalAlpha = 1; ctx.fillStyle = rg; ctx.fillRect(0, 0, w, h);
+    ctx.restore();
+  }
+  // shared glow texture
+  const glowTex = canvasTex(128, 128, (ctx)=>{
+    const g = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+    g.addColorStop(0, 'rgba(255,255,255,.95)');
+    g.addColorStop(.35, 'rgba(255,255,255,.42)');
+    g.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 128, 128);
+  });
+  function makeGlow(color, size, opacity){
+    const m = new THREE.SpriteMaterial({ map: glowTex, color: new THREE.Color(color), transparent: true,
+      opacity: opacity == null ? .55 : opacity, blending: THREE.AdditiveBlending, depthWrite: false, fog: true });
+    const s = new THREE.Sprite(m); s.scale.set(size, size, 1);
+    return s;
+  }
+  const shadowTex = canvasTex(128, 128, (ctx)=>{
+    const g = ctx.createRadialGradient(64, 64, 4, 64, 64, 64);
+    g.addColorStop(0, 'rgba(0,0,0,.62)'); g.addColorStop(.55, 'rgba(0,0,0,.3)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 128, 128);
+  });
+  function blob(w, d, opacity){
+    const m = new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, opacity: opacity == null ? .75 : opacity, depthWrite: false });
+    const g = new THREE.PlaneGeometry(w, d);
+    const mesh = new THREE.Mesh(g, m);
+    mesh.rotation.x = -Math.PI / 2; mesh.position.y = 0.012;
+    return mesh;
+  }
+  function neonBar(w, h, d, color, opacity){
+    const m = new THREE.MeshBasicMaterial({ color: new THREE.Color(color), transparent: true, opacity: opacity == null ? 1 : opacity,
+      toneMapped: false, fog: true });
+    return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
+  }
+
+  /* ── environment map (gives the floor its reflective sheen) ── */
+  (function buildEnv(){
+    const cv = document.createElement('canvas'); cv.width = 512; cv.height = 256;
+    const ctx = cv.getContext('2d');
+    const g = ctx.createLinearGradient(0, 0, 0, 256);
+    g.addColorStop(0, '#050b13'); g.addColorStop(.45, '#0d1b2a'); g.addColorStop(.55, '#16344d');
+    g.addColorStop(.75, '#0a1520'); g.addColorStop(1, '#050a10');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 512, 256);
+    const blobs = [['#38BDF8', 120, 60, 90], ['#F472B6', 360, 70, 80], ['#FBBF24', 250, 52, 40], ['#38BDF8', 470, 62, 60]];
+    blobs.forEach(([c, x, y, r])=>{
+      const rg = ctx.createRadialGradient(x, y, 0, x, y, r);
+      rg.addColorStop(0, c); rg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.globalAlpha = .55; ctx.fillStyle = rg; ctx.fillRect(x - r, y - r, r * 2, r * 2);
+    });
+    ctx.globalAlpha = 1;
+    const tex = new THREE.CanvasTexture(cv);
+    tex.mapping = THREE.EquirectangularReflectionMapping;
+    tex.colorSpace = THREE.SRGBColorSpace;
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    const rt = pmrem.fromEquirectangular(tex);
+    scene.environment = rt.texture;
+    tex.dispose(); pmrem.dispose();
+  })();
+
+  /* ── lights ── */
+  scene.add(new THREE.HemisphereLight(0xa9dcff, 0x0a1420, 0.75));
+  const key = new THREE.DirectionalLight(0xcfeaff, 0.9);
+  key.position.set(4, 12, 6); scene.add(key);
+  const pCyan = new THREE.PointLight(0x38BDF8, 34, 22, 2); pCyan.position.set(-7.5, 3.4, -3); scene.add(pCyan);
+  const pPink = new THREE.PointLight(0xF472B6, 30, 22, 2); pPink.position.set(7.5, 3.4, -3); scene.add(pPink);
+  const pGold = new THREE.PointLight(0xFBBF24, 18, 16, 2); pGold.position.set(0, 2.6, -8); scene.add(pGold);
+  const pCenter = new THREE.PointLight(0xbde8ff, 22, 20, 2); pCenter.position.set(0, 5.4, 1.5); scene.add(pCenter);
+
+  /* ── floor ── */
+  const gridTex = canvasTex(512, 512, (ctx, w, h)=>{
+    ctx.fillStyle = '#071019'; ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = 'rgba(70,180,235,.55)'; ctx.lineWidth = 2.2;
+    ctx.shadowColor = 'rgba(56,189,248,.9)'; ctx.shadowBlur = 9;
+    for(let i = 0; i <= 4; i++){
+      const p = (i / 4) * w;
+      ctx.beginPath(); ctx.moveTo(p, 0); ctx.lineTo(p, h); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, p); ctx.lineTo(w, p); ctx.stroke();
+    }
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = 'rgba(148,226,255,.14)'; ctx.lineWidth = 1;
+    for(let i = 1; i < 4; i++){
+      const p = (i / 4) * w;
+      ctx.beginPath(); ctx.moveTo(p + w / 8, 0); ctx.lineTo(p + w / 8, h); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, p + h / 8); ctx.lineTo(w, p + h / 8); ctx.stroke();
+    }
+  }, 8, 8);
+  const floorMat = new THREE.MeshStandardMaterial({
+    color: 0x08131f, map: gridTex, roughness: 0.3, metalness: 0.72,
+    emissive: new THREE.Color(0x1d5674), emissiveMap: gridTex, emissiveIntensity: 0.75,
+    envMapIntensity: 1.25
+  });
+  const floor = new THREE.Mesh(new THREE.CircleGeometry(ROOM_R, 96), floorMat);
+  floor.rotation.x = -Math.PI / 2; scene.add(floor);
+
+  const centerRing = new THREE.Mesh(new THREE.RingGeometry(3.2, 3.36, 96),
+    new THREE.MeshBasicMaterial({ color: C.cyan, transparent: true, opacity: .55, side: THREE.DoubleSide, toneMapped: false }));
+  centerRing.rotation.x = -Math.PI / 2; centerRing.position.y = 0.02; scene.add(centerRing);
+  const centerRing2 = new THREE.Mesh(new THREE.RingGeometry(4.9, 4.96, 96),
+    new THREE.MeshBasicMaterial({ color: C.pink, transparent: true, opacity: .32, side: THREE.DoubleSide, toneMapped: false }));
+  centerRing2.rotation.x = -Math.PI / 2; centerRing2.position.y = 0.02; scene.add(centerRing2);
+
+  /* ── walls / ceiling ── */
+  const wallTex = canvasTex(1024, 512, (ctx, w, h)=>{
+    const g = ctx.createLinearGradient(0, 0, 0, h);
+    g.addColorStop(0, '#04090f'); g.addColorStop(.35, '#0b1826'); g.addColorStop(.72, '#102436'); g.addColorStop(1, '#060d15');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = 'rgba(56,189,248,.07)'; ctx.lineWidth = 2;
+    for(let x = 0; x <= w; x += 64){ ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
+    ctx.strokeStyle = 'rgba(56,189,248,.05)';
+    for(let y = 0; y <= h; y += 96){ ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
+    const bg = ctx.createRadialGradient(w * .5, h * .75, 10, w * .5, h * .75, w * .55);
+    bg.addColorStop(0, 'rgba(56,189,248,.10)'); bg.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+  }, 4, 1);
+  const wall = new THREE.Mesh(new THREE.CylinderGeometry(ROOM_R, ROOM_R, WALL_H, 64, 1, true),
+    new THREE.MeshStandardMaterial({ map: wallTex, side: THREE.BackSide, roughness: .92, metalness: .22, envMapIntensity: .5 }));
+  wall.position.y = WALL_H / 2; scene.add(wall);
+
+  const ceil = new THREE.Mesh(new THREE.CircleGeometry(ROOM_R, 64),
+    new THREE.MeshStandardMaterial({ color: 0x080f18, roughness: .95, metalness: .2 }));
+  ceil.rotation.x = Math.PI / 2; ceil.position.y = WALL_H; scene.add(ceil);
+
+  const ringA = new THREE.Mesh(new THREE.TorusGeometry(ROOM_R - 0.35, 0.05, 8, 128),
+    new THREE.MeshBasicMaterial({ color: C.cyan, transparent: true, opacity: .85, toneMapped: false }));
+  ringA.rotation.x = Math.PI / 2; ringA.position.y = 0.5; scene.add(ringA);
+  const ringB = new THREE.Mesh(new THREE.TorusGeometry(ROOM_R - 0.35, 0.045, 8, 128),
+    new THREE.MeshBasicMaterial({ color: C.pink, transparent: true, opacity: .6, toneMapped: false }));
+  ringB.rotation.x = Math.PI / 2; ringB.position.y = 6.6; scene.add(ringB);
+
+  // wall pillars
+  for(let i = 0; i < 10; i++){
+    const a = (i / 10) * Math.PI * 2 + 0.31;
+    const pill = neonBar(0.07, 6.4, 0.07, i % 3 === 0 ? C.pink : C.cyan, 0.5);
+    pill.position.set(Math.cos(a) * (ROOM_R - 0.4), 3.2, Math.sin(a) * (ROOM_R - 0.4));
+    scene.add(pill);
+  }
+  // ceiling light bars
+  for(let i = 0; i < 3; i++){
+    const bar = neonBar(7.2, 0.08, 0.16, 0xdff3ff, 0.9);
+    bar.position.set(0, WALL_H - 0.35, -6 + i * 6);
+    scene.add(bar);
+    const glow = makeGlow(0xbfe9ff, 6.4, .22);
+    glow.position.copy(bar.position); glow.position.y -= 0.1; scene.add(glow);
+  }
+
+  /* ── floating particles ── */
+  (function particles(){
+    const N = COMPACT ? 110 : 170;
+    const pos = new Float32Array(N * 3);
+    for(let i = 0; i < N; i++){
+      const r = 3 + Math.random() * 11, a = Math.random() * Math.PI * 2;
+      pos[i * 3] = Math.cos(a) * r;
+      pos[i * 3 + 1] = 0.4 + Math.random() * 7.2;
+      pos[i * 3 + 2] = Math.sin(a) * r;
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const m = new THREE.PointsMaterial({ color: 0x9fe4ff, size: 0.075, transparent: true, opacity: .65,
+      depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true });
+    const pts = new THREE.Points(g, m);
+    pts.name = 'dust'; scene.add(pts);
+  })();
+
+  /* ── hologram sign ── */
+  const holo = new THREE.Group(); holo.position.set(0, 4.05, 0); scene.add(holo);
+  const holoTex = canvasTex(1024, 256, (ctx, w, h)=>{
+    ctx.clearRect(0, 0, w, h);
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    const g = ctx.createLinearGradient(w * .18, 0, w * .82, 0);
+    g.addColorStop(0, '#8BEAFF'); g.addColorStop(.45, '#EAF9FF'); g.addColorStop(.7, '#9FE0FF'); g.addColorStop(1, '#FFC6E4');
+    ctx.font = '900 116px ' + FONT;
+    ctx.shadowColor = 'rgba(56,189,248,.95)'; ctx.shadowBlur = 42;
+    ctx.fillStyle = g; ctx.fillText('숏폼커머스교육', w / 2, h / 2 - 22);
+    ctx.shadowBlur = 0;
+    ctx.font = '700 34px ' + FONT; ctx.fillStyle = 'rgba(200,236,255,.9)';
+    ctx.fillText('1:1 맞춤 과외  ·  잘하실 때까지 무한 AS', w / 2, h / 2 + 72);
+  });
+  const holoMat = new THREE.MeshBasicMaterial({ map: holoTex, transparent: true, opacity: .96,
+    blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide, toneMapped: false });
+  const holoPlane = new THREE.Mesh(new THREE.PlaneGeometry(6.6, 1.65), holoMat);
+  holo.add(holoPlane);
+  const holoBack = new THREE.Mesh(new THREE.PlaneGeometry(7.2, 1.95),
+    new THREE.MeshBasicMaterial({ color: C.cyan, transparent: true, opacity: .1, blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false }));
+  holoBack.position.z = -0.04; holo.add(holoBack);
+  const halo = makeGlow(0x38BDF8, 8.2, .22); halo.position.z = -0.6; holo.add(halo);
+
+  const ringH1 = new THREE.Mesh(new THREE.TorusGeometry(2.7, 0.028, 8, 96),
+    new THREE.MeshBasicMaterial({ color: C.cyan, transparent: true, opacity: .8, toneMapped: false }));
+  ringH1.rotation.x = Math.PI / 2.1; ringH1.position.y = -1.35; holo.add(ringH1);
+  const ringH2 = new THREE.Mesh(new THREE.TorusGeometry(3.3, 0.022, 8, 96),
+    new THREE.MeshBasicMaterial({ color: C.pink, transparent: true, opacity: .55, toneMapped: false }));
+  ringH2.rotation.x = Math.PI / 1.9; ringH2.position.y = -1.5; holo.add(ringH2);
+
+  const beam = new THREE.Mesh(new THREE.ConeGeometry(2.9, 2.4, 40, 1, true),
+    new THREE.MeshBasicMaterial({ color: 0x6fd8ff, transparent: true, opacity: .07, blending: THREE.AdditiveBlending,
+      depthWrite: false, side: THREE.DoubleSide, toneMapped: false }));
+  beam.position.y = -1.4; beam.rotation.x = Math.PI; holo.add(beam);
+
+  /* ── guide robot ── */
+  const guide = new THREE.Group(); guide.position.set(2.75, 0, 3.9); scene.add(guide);
+  const metal = new THREE.MeshStandardMaterial({ color: 0x16273c, roughness: .38, metalness: .85, envMapIntensity: 1.1 });
+  const metalLite = new THREE.MeshStandardMaterial({ color: 0x25405c, roughness: .3, metalness: .8, envMapIntensity: 1.1 });
+  const glowCyan = new THREE.MeshBasicMaterial({ color: 0x9CEBFF, toneMapped: false });
+  const glowPink = new THREE.MeshBasicMaterial({ color: 0xFFA8D4, toneMapped: false });
+
+  const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.34, 0.52, 8, 20), metal);
+  body.position.y = 1.02; guide.add(body);
+  const collar = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.025, 8, 32), glowCyan);
+  collar.rotation.x = Math.PI / 2; collar.position.y = 1.34; guide.add(collar);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.27, 28, 20), metalLite);
+  head.position.y = 1.66; guide.add(head);
+  const visor = new THREE.Mesh(new THREE.BoxGeometry(0.33, 0.085, 0.02), glowCyan);
+  visor.position.set(0, 1.68, 0.245); guide.add(visor);
+  const visorGlow = makeGlow(0x9CEBFF, 0.9, .5); visorGlow.position.set(0, 1.68, 0.26); guide.add(visorGlow);
+  const earL = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.09, 12), glowPink);
+  earL.rotation.z = Math.PI / 2; earL.position.set(-0.27, 1.66, 0); guide.add(earL);
+  const earR = earL.clone(); earR.position.x = 0.27; guide.add(earR);
+  const antenna = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.24, 8), metalLite);
+  antenna.position.y = 2.0; guide.add(antenna);
+  const antMat = new THREE.MeshBasicMaterial({ color: 0xFFA8D4, toneMapped: false });
+  const antGlow = new THREE.Mesh(new THREE.SphereGeometry(0.045, 12, 10), antMat);
+  antGlow.position.y = 2.14; guide.add(antGlow);
+  const armL = new THREE.Mesh(new THREE.CapsuleGeometry(0.065, 0.34, 6, 12), metalLite);
+  armL.position.set(-0.42, 1.06, 0.05); armL.rotation.z = 0.42; guide.add(armL);
+  const armR = armL.clone(); armR.position.x = 0.42; armR.rotation.z = -0.42; guide.add(armR);
+  const handL = new THREE.Mesh(new THREE.SphereGeometry(0.085, 14, 12), metalLite);
+  handL.position.set(-0.53, 0.82, 0.12); guide.add(handL);
+  const handR = handL.clone(); handR.position.x = 0.53; guide.add(handR);
+  const chest = new THREE.Mesh(new THREE.TorusGeometry(0.075, 0.018, 8, 24), glowPink);
+  chest.position.set(0, 1.12, 0.3); guide.add(chest);
+  const baseRing = new THREE.Mesh(new THREE.TorusGeometry(0.34, 0.02, 8, 40),
+    new THREE.MeshBasicMaterial({ color: C.cyan, transparent: true, opacity: .8, toneMapped: false }));
+  baseRing.rotation.x = Math.PI / 2; baseRing.position.y = 0.55; guide.add(baseRing);
+  const guideBlob = blob(1.5, 1.5, .7); guide.add(guideBlob);
+
+  const bubbleTex = canvasTex(512, 160, (ctx, w, h)=>{
+    ctx.clearRect(0, 0, w, h);
+    rr(ctx, 8, 8, w - 16, h - 40, 26);
+    ctx.fillStyle = 'rgba(10,24,38,.94)'; ctx.fill();
+    ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(56,189,248,.85)'; ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(w / 2 - 16, h - 32); ctx.lineTo(w / 2, h - 8); ctx.lineTo(w / 2 + 16, h - 32);
+    ctx.closePath(); ctx.fillStyle = 'rgba(10,24,38,.94)'; ctx.fill(); ctx.stroke();
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = '900 40px ' + FONT; ctx.fillStyle = '#EAF6FF';
+    ctx.fillText('부스를 눌러 보세요', w / 2, h / 2 - 10);
+    ctx.font = '700 24px ' + FONT; ctx.fillStyle = '#8FD8FF';
+    ctx.fillText('가까이 가면 자동으로 열려요', w / 2, h / 2 + 34);
+  });
+  const bubble = new THREE.Sprite(new THREE.SpriteMaterial({ map: bubbleTex, transparent: true, depthWrite: false, fog: true }));
+  bubble.scale.set(2.6, 0.82, 1); bubble.position.y = 2.62; guide.add(bubble);
+
+  /* ── curriculum booth ── */
+  const cur = new THREE.Group();
+  const CUR_P = new THREE.Vector3(-8.4, 0, -3.2);
+  cur.position.copy(CUR_P); cur.rotation.y = Math.atan2(-CUR_P.x, -CUR_P.z); scene.add(cur);
+
+  const curTex = canvasTex(1024, 512, (ctx, w, h)=>{
+    panelBase(ctx, w, h, HEX.cyan);
+    ctx.textBaseline = 'middle';
+    try{ ctx.letterSpacing = '5px'; }catch(e){}
+    ctx.font = '800 22px ' + FONT; ctx.fillStyle = '#7FD4FF';
+    ctx.fillText('CURRICULUM', 48, 62);
+    try{ ctx.letterSpacing = '0px'; }catch(e){}
+    ctx.font = '900 58px ' + FONT; ctx.fillStyle = '#FFFFFF';
+    ctx.shadowColor = 'rgba(56,189,248,.8)'; ctx.shadowBlur = 24;
+    ctx.fillText('커리큘럼', 46, 118);
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = 'rgba(56,189,248,.35)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(48, 156); ctx.lineTo(w - 48, 156); ctx.stroke();
+    const rows = [
+      ['01', 'AI 숏폼 기획·대본', '팔릴 상품을 고르고 15초 대본까지 AI로 뽑습니다.'],
+      ['02', '영상·음성·편집 자동화', '촬영 없이 이미지·음성·자막을 붙여 완성합니다.'],
+      ['03', '쿠팡·스마트스토어·11번가 상품 등록', '상품 선정부터 등록 문구·이미지까지 실습합니다.'],
+      ['04', '13채널 + 밴드 20곳 원클릭 배포', '한 편을 13개 채널과 밴드 20곳에 동시에 배포합니다.']
+    ];
+    rows.forEach((r, i)=>{
+      const y = 208 + i * 76;
+      ctx.font = '900 30px ' + FONT; ctx.fillStyle = i === 3 ? HEX.gold : HEX.cyan;
+      ctx.fillText(r[0], 50, y);
+      ctx.font = '800 32px ' + FONT; ctx.fillStyle = '#EAF6FF';
+      ctx.fillText(r[1], 116, y - 4);
+      ctx.font = '500 21px ' + FONT; ctx.fillStyle = '#93A9C2';
+      ctx.fillText(r[2], 116, y + 30);
+    });
+  });
+  const NEON = (t, c) => new THREE.MeshBasicMaterial({ map: t, transparent: true, toneMapped: false, fog: true });
+
+  const curBase = new THREE.Mesh(new THREE.BoxGeometry(7.4, 0.16, 1.5),
+    new THREE.MeshStandardMaterial({ color: 0x101f33, roughness: .35, metalness: .9, envMapIntensity: 1.1 }));
+  curBase.position.set(0, 0.08, 0.1); cur.add(curBase);
+  const curStep = new THREE.Mesh(new THREE.BoxGeometry(6.9, 0.34, 1.1),
+    new THREE.MeshStandardMaterial({ color: 0x14273c, roughness: .4, metalness: .8 }));
+  curStep.position.set(0, 0.25, 0.12); cur.add(curStep);
+  cur.add(blob(8.6, 2.6, .8));
+
+  const curPanel = new THREE.Mesh(new THREE.PlaneGeometry(6.5, 3.25), NEON(curTex));
+  curPanel.position.set(0, 2.75, 0.06); cur.add(curPanel);
+  const curFrameL = neonBar(0.045, 3.45, 0.045, C.cyan, .85); curFrameL.position.set(-3.3, 2.75, 0.08); cur.add(curFrameL);
+  const curFrameR = curFrameL.clone(); curFrameR.position.x = 3.3; cur.add(curFrameR);
+  const curFrameT = neonBar(6.65, 0.045, 0.045, C.cyan, .85); curFrameT.position.set(0, 4.42, 0.08); cur.add(curFrameT);
+  const curFrameB = curFrameT.clone(); curFrameB.position.y = 1.09; cur.add(curFrameB);
+  const curGlow = makeGlow(0x38BDF8, 8.2, .3); curGlow.position.set(0, 2.7, -0.25); cur.add(curGlow);
+
+  // vertical light poles
+  const poleL = neonBar(0.08, 3.9, 0.08, C.cyan, .55); poleL.position.set(-3.55, 1.95, 0.35); cur.add(poleL);
+  const poleR = poleL.clone(); poleR.position.x = 3.55; cur.add(poleR);
+
+  // floating wireframe ornament
+  const orn = new THREE.Mesh(new THREE.IcosahedronGeometry(0.46, 0),
+    new THREE.MeshBasicMaterial({ color: C.cyan, wireframe: true, transparent: true, opacity: .55, toneMapped: false }));
+  orn.position.set(0, 5.25, 0); orn.name = 'orn-cur'; cur.add(orn);
+  const ornGlow = makeGlow(0x38BDF8, 2.2, .25); ornGlow.position.copy(orn.position); cur.add(ornGlow);
+
+  const curHit = new THREE.Mesh(new THREE.BoxGeometry(7.8, 4.6, 1.8),
+    new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false }));
+  curHit.position.set(0, 2.4, 0.2); curHit.userData.zone = 'curriculum'; cur.add(curHit);
+
+  /* ── case / channel booth ── */
+  const cases = new THREE.Group();
+  const CASE_P = new THREE.Vector3(8.4, 0, -3.2);
+  cases.position.copy(CASE_P); cases.rotation.y = Math.atan2(-CASE_P.x, -CASE_P.z); scene.add(cases);
+
+  const caseHeadTex = canvasTex(1024, 240, (ctx, w, h)=>{
+    panelBase(ctx, w, h, HEX.pink);
+    ctx.textBaseline = 'middle';
+    ctx.font = '800 22px ' + FONT; ctx.fillStyle = '#FFB4DA'; ctx.fillText('PROOF & CHANNEL', 42, 58);
+    ctx.font = '900 62px ' + FONT; ctx.fillStyle = '#FFFFFF';
+    ctx.shadowColor = 'rgba(244,114,182,.85)'; ctx.shadowBlur = 24;
+    ctx.fillText('사례 · 채널', 40, 132);
+    ctx.shadowBlur = 0;
+    ctx.font = '500 24px ' + FONT; ctx.fillStyle = '#93A9C2';
+    ctx.fillText('눌러서 실제 채널로 바로 이동하세요', 42, 192);
+  });
+  const caseHead = new THREE.Mesh(new THREE.PlaneGeometry(5.4, 1.27), NEON(caseHeadTex));
+  caseHead.position.set(0, 4.32, 0.06); cases.add(caseHead);
+  const caseBase = new THREE.Mesh(new THREE.BoxGeometry(7.0, 0.16, 1.5),
+    new THREE.MeshStandardMaterial({ color: 0x101f33, roughness: .35, metalness: .9, envMapIntensity: 1.1 }));
+  caseBase.position.set(0, 0.08, 0.1); cases.add(caseBase);
+  cases.add(blob(8.2, 2.6, .8));
+
+  function caseCardTexture(label, title, desc, accent){
+    return canvasTex(512, 640, (ctx, w, h)=>{
+      panelBase(ctx, w, h, accent);
+      const rg = ctx.createRadialGradient(w / 2, 120, 10, w / 2, 120, 260);
+      rg.addColorStop(0, rgba(accent, 0.24)); rg.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = rg; ctx.fillRect(0, 0, w, h);
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      // icon dot
+      ctx.beginPath(); ctx.arc(w / 2, 116, 34, 0, Math.PI * 2);
+      ctx.fillStyle = rgba(accent, 0.18); ctx.fill();
+      ctx.lineWidth = 3; ctx.strokeStyle = accent; ctx.stroke();
+      ctx.beginPath(); ctx.arc(w / 2, 116, 12, 0, Math.PI * 2); ctx.fillStyle = accent; ctx.fill();
+      ctx.font = '800 20px ' + FONT; ctx.fillStyle = accent;
+      ctx.fillText(label, w / 2, 176);
+      ctx.font = '900 46px ' + FONT; ctx.fillStyle = '#FFFFFF';
+      ctx.fillText(title, w / 2, 240);
+      ctx.font = '500 21px ' + FONT; ctx.fillStyle = '#9DB2CC';
+      const lines = wrapLines(ctx, desc, w - 84);
+      lines.slice(0, 4).forEach((ln, i)=>ctx.fillText(ln, w / 2, 300 + i * 32));
+      ctx.strokeStyle = 'rgba(255,255,255,.1)'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(70, h - 116); ctx.lineTo(w - 70, h - 116); ctx.stroke();
+      ctx.font = '900 24px ' + FONT; ctx.fillStyle = accent;
+      ctx.fillText('바로가기  →', w / 2, h - 74);
+    });
+  }
+  const caseItems = [
+    { label: 'YOUTUBE', title: '영차 채널', desc: '꾸준히 올라가는 숏폼 채널. 그대로 따라 하실 수 있습니다.', color: HEX.pink, hex: C.pink, href: LINKS.youtube },
+    { label: 'INPOCK LINK', title: '인포크링크', desc: '교육 안내와 상품 링크를 한 페이지에 모아 둔 곳입니다.', color: HEX.cyan, hex: C.cyan, href: LINKS.inpock },
+    { label: 'SMARTSTORE', title: '스마트스토어', desc: '과외에서 만든 상품이 실제로 판매되는 스토어입니다.', color: HEX.gold, hex: C.gold, href: LINKS.smartstore }
+  ];
+  caseItems.forEach((it, i)=>{
+    const x = -2.45 + i * 2.45;
+    const tex = caseCardTexture(it.label, it.title, it.desc, it.color);
+    const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: true, toneMapped: false, fog: true, side: THREE.DoubleSide });
+    const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2.2, 2.75), mat);
+    mesh.position.set(x, 2.5, 0.08); mesh.userData.link = it.href; mesh.userData.name = it.title;
+    mesh.userData.floatBase = mesh.position.y; mesh.userData.floatOff = i * 1.7;
+    cases.add(mesh);
+    const glow = makeGlow(it.hex, 3.0, .3); glow.position.set(x, 2.4, -0.18); cases.add(glow);
+    const frameTop = neonBar(2.3, 0.035, 0.035, it.hex, .75); frameTop.position.set(x, 3.9, 0.09); cases.add(frameTop);
+    const frameBot = frameTop.clone(); frameBot.position.y = 1.11; cases.add(frameBot);
+    const hit = new THREE.Mesh(new THREE.PlaneGeometry(2.35, 2.9),
+      new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false }));
+    hit.position.set(x, 2.5, 0.12); hit.userData.link = it.href; cases.add(hit);
+  });
+
+  const caseHit = new THREE.Mesh(new THREE.BoxGeometry(7.6, 4.2, 1.4),
+    new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false }));
+  caseHit.position.set(0, 3.0, 0.3); caseHit.userData.zone = 'cases'; cases.add(caseHit);
+
+  /* ── 1:1 consult desk ── */
+  const desk = new THREE.Group(); desk.position.set(0, 0, -9); scene.add(desk);
+  const deskTex = canvasTex(1024, 448, (ctx, w, h)=>{
+    panelBase(ctx, w, h, HEX.gold);
+    ctx.textBaseline = 'middle';
+    ctx.font = '800 22px ' + FONT; ctx.fillStyle = '#FFD97A';
+    ctx.fillText('1 : 1 TUTORING DESK', 46, 58);
+    ctx.font = '900 74px ' + FONT; ctx.fillStyle = '#FFFFFF';
+    ctx.shadowColor = 'rgba(251,191,36,.9)'; ctx.shadowBlur = 30;
+    ctx.fillText('잘하실 때까지 무한 AS', 42, 168);
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = 'rgba(251,191,36,.35)'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(46, 232); ctx.lineTo(w - 46, 232); ctx.stroke();
+    ctx.font = '500 30px ' + FONT; ctx.fillStyle = '#C7D8EA';
+    ctx.fillText('수업이 끝나도, 막히는 부분은 언제든 다시 봐 드립니다.', 46, 288);
+    ctx.font = '800 26px ' + FONT; ctx.fillStyle = '#FFD97A';
+    ctx.fillText('카톡 오픈채팅으로 바로 연결됩니다.', 46, 344);
+  });
+  const deskBoard = new THREE.Mesh(new THREE.PlaneGeometry(5.6, 2.45), NEON(deskTex));
+  deskBoard.position.set(0, 3.35, -1.15); desk.add(deskBoard);
+  const boardFrameT = neonBar(5.75, 0.045, 0.045, C.gold, .85); boardFrameT.position.set(0, 4.6, -1.13); desk.add(boardFrameT);
+  const boardFrameB = boardFrameT.clone(); boardFrameB.position.y = 2.1; desk.add(boardFrameB);
+  const deskGlow = makeGlow(0xFBBF24, 7.4, .25); deskGlow.position.set(0, 3.3, -1.5); desk.add(deskGlow);
+
+  const deskTop = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.14, 1.5),
+    new THREE.MeshStandardMaterial({ color: 0x16293e, roughness: .3, metalness: .9, envMapIntensity: 1.2 }));
+  deskTop.position.set(0, 1.0, -0.1); desk.add(deskTop);
+  const deskEdge = neonBar(4.24, 0.03, 0.03, C.gold, .8); deskEdge.position.set(0, 1.075, 0.66); desk.add(deskEdge);
+  [-1.9, 1.9].forEach(x=>{
+    const leg = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.95, 0.1),
+      new THREE.MeshStandardMaterial({ color: 0x1b3348, roughness: .4, metalness: .8 }));
+    leg.position.set(x, 0.48, -0.1); desk.add(leg);
+  });
+  const deskBlob = blob(6.0, 2.6, .75); deskBlob.position.z = -0.3; desk.add(deskBlob);
+
+  const monTex = canvasTex(256, 160, (ctx, w, h)=>{
+    ctx.fillStyle = '#0a1a2b'; ctx.fillRect(0, 0, w, h);
+    ctx.strokeStyle = 'rgba(56,189,248,.75)'; ctx.lineWidth = 2;
+    for(let i = 0; i < 5; i++){
+      const y = 26 + i * 24; const ww = 60 + ((i * 47) % 120);
+      ctx.strokeRect(20, y, ww, 10);
+    }
+    ctx.fillStyle = 'rgba(244,114,182,.85)'; ctx.fillRect(20, 132, 90, 12);
+    ctx.fillStyle = 'rgba(251,191,36,.9)'; ctx.fillRect(120, 132, 44, 12);
+  });
+  const monitor = new THREE.Mesh(new THREE.PlaneGeometry(1.15, 0.72), NEON(monTex));
+  monitor.position.set(0, 1.55, -0.62); monitor.rotation.x = -0.12; desk.add(monitor);
+  const monStand = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.4, 0.06),
+    new THREE.MeshStandardMaterial({ color: 0x24405c, metalness: .8, roughness: .4 }));
+  monStand.position.set(0, 1.2, -0.66); desk.add(monStand);
+
+  const ctaTex = canvasTex(512, 150, (ctx, w, h)=>{
+    ctx.clearRect(0, 0, w, h);
+    const g = ctx.createLinearGradient(0, 0, w, h);
+    g.addColorStop(0, '#F472B6'); g.addColorStop(.55, '#d24ea5'); g.addColorStop(1, '#8b5cf6');
+    rr(ctx, 4, 4, w - 8, h - 8, 26); ctx.fillStyle = g; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.4)'; ctx.lineWidth = 2; rr(ctx, 6, 6, w - 12, h - 12, 24); ctx.stroke();
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.font = '900 48px ' + FONT; ctx.fillStyle = '#FFFFFF';
+    ctx.shadowColor = 'rgba(0,0,0,.35)'; ctx.shadowBlur = 10;
+    ctx.fillText('1:1 상담 시작', w / 2, h / 2 - 8);
+    ctx.shadowBlur = 0;
+    ctx.font = '700 20px ' + FONT; ctx.fillStyle = 'rgba(255,255,255,.85)';
+    ctx.fillText('카톡 오픈채팅 바로 열기', w / 2, h / 2 + 32);
+  });
+  const cta = new THREE.Mesh(new THREE.PlaneGeometry(1.9, 0.56), NEON(ctaTex));
+  cta.position.set(0, 1.72, 0.72); cta.userData.zone = 'desk'; desk.add(cta);
+  const ctaGlow = makeGlow(0xF472B6, 2.6, .5); ctaGlow.position.set(0, 1.72, 0.6); desk.add(ctaGlow);
+
+  const deskHit = new THREE.Mesh(new THREE.BoxGeometry(5.8, 3.8, 2.6),
+    new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false }));
+  deskHit.position.set(0, 1.9, -0.2); deskHit.userData.zone = 'desk'; desk.add(deskHit);
+
+  /* ── floating cubes for depth ── */
+  const cubes = [];
+  const cubeGeo = new THREE.BoxGeometry(0.34, 0.34, 0.34);
+  const cubeMat = new THREE.MeshStandardMaterial({ color: 0x0f2236, metalness: .85, roughness: .3,
+    emissive: new THREE.Color(0x123a52), emissiveIntensity: .9, envMapIntensity: 1.1 });
+  for(let i = 0; i < 7; i++){
+    const a = (i / 7) * Math.PI * 2 + 0.6;
+    const r = 5.4 + (i % 3) * 1.4;
+    const cube = new THREE.Mesh(cubeGeo, cubeMat);
+    cube.position.set(Math.cos(a) * r, 1.3 + (i % 4) * 0.85, Math.sin(a) * r);
+    cube.rotation.set(i, i * 1.7, i * 0.6);
+    scene.add(cube);
+    const edges = new THREE.LineSegments(new THREE.EdgesGeometry(cubeGeo),
+      new THREE.LineBasicMaterial({ color: i % 2 ? C.cyan : C.pink, transparent: true, opacity: .6 }));
+    cube.add(edges);
+    cubes.push(cube);
+  }
+
+  /* ── player + controls ── */
+  const player = { x: 0, z: 10.6 };
+  let yaw = 0, pitch = -0.02, yawT = 0, pitchT = -0.02, bobT = 0;
+  const keys = Object.create(null);
+  const joy = { x: 0, y: 0, active: false, id: null };
+
+  const SPOTS = {
+    entrance: { x: 0, z: 10.6, lookX: 0, lookZ: 0, hint: '가이드를 따라 부스를 둘러보세요' },
+    curriculum: { x: -4.7, z: -0.7, lookX: -8.4, lookZ: -3.2, hint: '커리큘럼 4단계 — 부스를 눌러 보세요' },
+    cases: { x: 4.7, z: -0.7, lookX: 8.4, lookZ: -3.2, hint: '유튜브 · 인포크 · 스마트스토어로 바로 이동' },
+    desk: { x: 0, z: -5.4, lookX: 0, lookZ: -9, hint: '상담 데스크 — 카톡 오픈채팅으로 바로 연결' }
+  };
+  const lookYaw = (px, pz, tx, tz) => Math.atan2(-(tx - px), -(tz - pz));
+
+  function setSpot(name, instant){
+    const s = SPOTS[name]; if(!s) return;
+    const ty = lookYaw(s.x, s.z, s.lookX, s.lookZ);
+    closeCard(false);
+    const apply = ()=>{
+      player.x = s.x; player.z = s.z;
+      yaw = yawT = ty; pitch = pitchT = -0.03;
+      camera.position.set(player.x, EYE, player.z);
+      camera.rotation.set(pitch, yaw, 0);
+      el.hintText.innerHTML = s.hint;
+    };
+    Array.from(el.tp.children).forEach(b=>b.classList.toggle('on', b.dataset.spot === name));
+    if(instant){ apply(); return; }
+    el.fade.classList.add('on');
+    setTimeout(()=>{ apply(); el.fade.classList.remove('on'); }, 250);
+    if(COMPACT) el.hintbar.style.opacity = '1';
+  }
+  el.tp.addEventListener('click', (e)=>{
+    const b = e.target.closest('button[data-spot]'); if(!b) return;
+    setSpot(b.dataset.spot);
+  });
+
+  // keyboard
+  addEventListener('keydown', (e)=>{
+    const k = e.key.toLowerCase();
+    keys[k] = true;
+    if(['arrowup','arrowdown','arrowleft','arrowright',' '].includes(k)) e.preventDefault();
+  });
+  addEventListener('keyup', (e)=>{ keys[e.key.toLowerCase()] = false; });
+  addEventListener('blur', ()=>{ for(const k in keys) keys[k] = false; });
+
+  // joystick
+  function resetJoy(){
+    joy.active = false; joy.id = null; joy.x = 0; joy.y = 0;
+    el.stick.style.transform = 'translate(0px,0px)';
+  }
+  function moveJoy(e){
+    const r = el.pad.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    let dx = e.clientX - cx, dy = e.clientY - cy;
+    const max = r.width / 2 - 18;
+    const len = Math.hypot(dx, dy);
+    if(len > max){ dx = dx / len * max; dy = dy / len * max; }
+    joy.x = dx / max; joy.y = dy / max;
+    el.stick.style.transform = `translate(${dx}px,${dy}px)`;
+  }
+  el.pad.addEventListener('pointerdown', (e)=>{
+    if(api && api.cardOpen) return;
+    joy.active = true; joy.id = e.pointerId;
+    try{ el.pad.setPointerCapture(e.pointerId); }catch(err){}
+    moveJoy(e); e.preventDefault();
+  });
+  el.pad.addEventListener('pointermove', (e)=>{ if(joy.active && e.pointerId === joy.id){ moveJoy(e); e.preventDefault(); } });
+  el.pad.addEventListener('pointerup', (e)=>{ if(e.pointerId === joy.id) resetJoy(); });
+  el.pad.addEventListener('pointercancel', resetJoy);
+
+  // look + tap on canvas
+  const canvas = renderer.domElement;
+  const ptr = { active: false, id: null, px: 0, py: 0, moved: 0, nx: 0, ny: 0 };
+  const raycaster = new THREE.Raycaster();
+  const hitList = [];
+  scene.traverse((o)=>{
+    if(o.isMesh && (o.userData.zone || o.userData.link)) hitList.push(o);
+  });
+
+  canvas.addEventListener('pointerdown', (e)=>{
+    if(api && api.cardOpen) return;
+    if(e.pointerType === 'mouse' && e.button !== 0) return;
+    ptr.active = true; ptr.id = e.pointerId; ptr.px = e.clientX; ptr.py = e.clientY; ptr.moved = 0;
+    canvas.classList.add('grabbing');
+    try{ canvas.setPointerCapture(e.pointerId); }catch(err){}
+    el.help.hidden = true;
+  });
+  canvas.addEventListener('pointermove', (e)=>{
+    const r = canvas.getBoundingClientRect();
+    ptr.nx = ((e.clientX - r.left) / r.width) * 2 - 1;
+    ptr.ny = -((e.clientY - r.top) / r.height) * 2 + 1;
+    if(!ptr.active || e.pointerId !== ptr.id) return;
+    const dx = e.clientX - ptr.px, dy = e.clientY - ptr.py;
+    ptr.px = e.clientX; ptr.py = e.clientY;
+    ptr.moved += Math.abs(dx) + Math.abs(dy);
+    yawT -= dx * 0.0034;
+    pitchT -= dy * 0.0029;
+    pitchT = Math.max(-0.72, Math.min(0.62, pitchT));
+  });
+  function endPtr(e){
+    if(e.pointerId !== ptr.id) return;
+    ptr.active = false; canvas.classList.remove('grabbing');
+    if(ptr.moved < 12){
+      const r = canvas.getBoundingClientRect();
+      const nx = ((e.clientX - r.left) / r.width) * 2 - 1;
+      const ny = -((e.clientY - r.top) / r.height) * 2 + 1;
+      tap(nx, ny);
+    }
+  }
+  canvas.addEventListener('pointerup', endPtr);
+  canvas.addEventListener('pointercancel', (e)=>{ if(e.pointerId === ptr.id){ ptr.active = false; canvas.classList.remove('grabbing'); } });
+
+  function tap(nx, ny){
+    if(api && api.cardOpen) return;
+    raycaster.setFromCamera(ndc.set(nx, ny), camera);
+    const hits = raycaster.intersectObjects(hitList, false);
+    hits.sort((a, b)=>a.distance - b.distance);
+    for(const h of hits){
+      if(h.object.userData.link){ window.open(h.object.userData.link, '_blank', 'noopener'); return; }
+    }
+    for(const h of hits){
+      if(h.object.userData.zone){ openCard(h.object.userData.zone, true); return; }
+    }
+  }
+  const ndc = new THREE.Vector2();
+
+  // proximity + suppression
+  const zones = [
+    { key: 'curriculum', p: CUR_P, r: 3.5, hint: '커리큘럼 · 눌러서 자세히 보기' },
+    { key: 'cases', p: CASE_P, r: 3.5, hint: '사례·채널 · 눌러서 채널 바로가기' },
+    { key: 'desk', p: new THREE.Vector3(0, 0, -9), r: 3.4, hint: '1:1 상담 · 눌러서 카톡 연결' }
+  ];
+  const suppressed = new Set();
+
+  api = {
+    cardOpen: false,
+    suppress(zone){ suppressed.add(zone); },
+    releaseJoy(){ resetJoy(); }
+  };
+
+  /* ── resize ── */
+  function onResize(){
+    const w = innerWidth, h = innerHeight;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, COMPACT ? 1.75 : 2));
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h; camera.updateProjectionMatrix();
+    if(w < 820) document.documentElement.classList.add('compact');
+  }
+  addEventListener('resize', onResize);
+  onResize();
+  setSpot('entrance', true);
+
+  /* ── frames ── */
+  let started = false;
+  const clock = new THREE.Clock();
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function animate(){
+    requestAnimationFrame(animate);
+    const dt = Math.min(clock.getDelta(), 0.06);
+    const t = clock.elapsedTime;
+
+    // movement input
+    let mx = 0, mz = 0;
+    if(keys['w'] || keys['arrowup']) mz -= 1;
+    if(keys['s'] || keys['arrowdown']) mz += 1;
+    if(keys['a'] || keys['arrowleft']) mx -= 1;
+    if(keys['d'] || keys['arrowright']) mx += 1;
+    mx += joy.x; mz += joy.y;
+    const inLen = Math.hypot(mx, mz);
+    let moving = false;
+    if(inLen > 0.06 && !(api.cardOpen)){
+      const nx = mx / Math.max(1, inLen), nz = mz / Math.max(1, inLen);
+      const speed = (keys['shift'] ? 5.0 : 3.05) * Math.min(1, inLen);
+      const fx = -Math.sin(yaw), fz = -Math.cos(yaw);
+      const rxv = Math.cos(yaw), rzv = -Math.sin(yaw);
+      let vx = fx * (-nz) + rxv * nx;
+      let vz = fz * (-nz) + rzv * nx;
+      const vl = Math.hypot(vx, vz);
+      if(vl > 0.001){
+        vx /= vl; vz /= vl; moving = true;
+        player.x += vx * speed * dt;
+        player.z += vz * speed * dt;
+      }
+    }
+
+    // bounds
+    const distC = Math.hypot(player.x, player.z);
+    const LIM = 13.6;
+    if(distC > LIM){ player.x = player.x / distC * LIM; player.z = player.z / distC * LIM; }
+    // booth collision
+    for(const z of zones){
+      const dx = player.x - z.p.x, dz = player.z - z.p.z;
+      const d = Math.hypot(dx, dz), min = z.key === 'desk' ? 3.0 : 3.15;
+      if(d < min && d > 0.001){ player.x = z.p.x + dx / d * min; player.z = z.p.z + dz / d * min; }
+    }
+
+    // camera smoothing
+    yaw += (yawT - yaw) * Math.min(1, dt * 14);
+    pitch += (pitchT - pitch) * Math.min(1, dt * 14);
+    bobT += dt * (moving ? 8.2 : 1.6);
+    const bob = reduceMotion ? 0 : Math.sin(bobT) * (moving ? 0.019 : 0.005);
+    camera.position.set(player.x, EYE + bob, player.z);
+    camera.rotation.set(pitch, yaw, 0);
+
+    // hologram
+    if(!reduceMotion){
+      holo.position.y = 4.05 + Math.sin(t * 0.9) * 0.11;
+      ringH1.rotation.z = t * 0.35; ringH2.rotation.z = -t * 0.24;
+      holoMat.opacity = 0.9 + Math.sin(t * 2.4) * 0.06;
+      orn.rotation.y = t * 0.5; orn.rotation.x = t * 0.22;
+      orn.position.y = 5.25 + Math.sin(t * 0.8) * 0.1;
+      cubes.forEach((c, i)=>{
+        c.rotation.y += dt * (0.24 + i * 0.03);
+        c.rotation.x += dt * 0.12;
+        c.position.y += Math.sin(t * 0.7 + i) * dt * 0.06;
+      });
+      caseItems.forEach(()=>{});
+      cases.children.forEach((o)=>{
+        if(o.userData.floatBase != null){
+          o.position.y = o.userData.floatBase + Math.sin(t * 0.9 + o.userData.floatOff) * 0.05;
+        }
+      });
+      const dust = scene.getObjectByName('dust');
+      if(dust){ dust.rotation.y = t * 0.015; }
+      guide.position.y = Math.sin(t * 1.5) * 0.045;
+      antGlow.material.color.setHex(Math.sin(t * 3) > 0 ? 0xFFA8D4 : 0xFBBF24);
+      baseRing.rotation.z = t * 0.6;
+      chest.scale.setScalar(1 + Math.sin(t * 2.6) * 0.12);
+    }
+    // guide faces the player
+    const gdx = camera.position.x - guide.position.x, gdz = camera.position.z - guide.position.z;
+    if(gdx * gdx + gdz * gdz > 0.04){
+      const want = Math.atan2(gdx, gdz);
+      let diff = want - guide.rotation.y;
+      while(diff > Math.PI) diff -= Math.PI * 2;
+      while(diff < -Math.PI) diff += Math.PI * 2;
+      guide.rotation.y += diff * Math.min(1, dt * 2.4);
+    }
+
+    // proximity popups
+    let near = null, nearD = 99;
+    for(const z of zones){
+      const d = Math.hypot(player.x - z.p.x, player.z - z.p.z);
+      if(d < 5.2) suppressed.delete(z.key);
+      if(d < nearD){ nearD = d; near = z; }
+    }
+    const showNear = near && nearD < 4.6 && !api.cardOpen;
+    el.nearhint.classList.toggle('show', !!showNear);
+    if(showNear) el.nearhint.textContent = near.hint;
+    if(near && nearD < near.r && !api.cardOpen && !suppressed.has(near.key)){
+      openCard(near.key, false);
+    }
+
+    renderer.render(scene, camera);
+    if(!started){
+      started = true;
+      el.loading.classList.add('done');
+      setTimeout(()=>{ el.loading.style.display = 'none'; }, 600);
+      if(COMPACT) setTimeout(()=>toast('왼쪽 조이스틱으로 이동 · 화면 드래그로 시점 회전', 3400), 900);
+    }
+  }
+  animate();
+
+  // hide hint bar after a while
+  setTimeout(()=>{ el.hintbar.style.opacity = '.35'; }, 9000);
+  ['pointerdown','keydown'].forEach(ev=>addEventListener(ev, ()=>{ el.hintbar.style.opacity = '1'; }, { once: true, passive: true }));
+
+  addEventListener('error', (e)=>{ console.warn('[metaverse error]', e.message || e); });
+}
+</script>
+</body>
+</html>
