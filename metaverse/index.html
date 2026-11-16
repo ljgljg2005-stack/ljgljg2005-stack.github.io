@@ -1034,16 +1034,29 @@ function boot(THREE){
   const joy = { x: 0, y: 0, active: false, id: null };
 
   const SPOTS = {
-    entrance: { x: 0, z: 12.2, lookX: 0, lookY: 2.4, lookZ: 0, hint: '가이드를 따라 부스를 둘러보세요' },
-    curriculum: { x: -2.6, z: -1.0, lookX: -8.4, lookY: 2.6, lookZ: -3.2, hint: '커리큘럼 4단계 — 부스를 눌러 보세요' },
-    cases: { x: 2.6, z: -1.0, lookX: 8.4, lookY: 2.9, lookZ: -3.2, hint: '유튜브 · 인포크 · 스마트스토어로 바로 이동' },
-    desk: { x: 0, z: -4.3, lookX: 0, lookY: 2.9, lookZ: -9, hint: '상담 데스크 — 카톡 오픈채팅으로 바로 연결' }
+    entrance: { x: 0, z: 12.2, lookX: 0, lookY: 2.4, lookZ: 0, hint: '가이드를 따라 부스를 둘러보세요' }
   };
+  // booth framing: stand back far enough that the whole booth fits the screen (matters on portrait phones)
+  const ZONES_SPOT = {
+    curriculum: { ax: -8.4, az: -3.2, halfW: 3.35, base: 6.2, lookY: 2.6, hint: '커리큘럼 4단계 — 부스를 눌러 보세요' },
+    cases: { ax: 8.4, az: -3.2, halfW: 3.75, base: 6.2, lookY: 2.9, hint: '유튜브 · 인포크 · 스마트스토어로 바로 이동' },
+    desk: { ax: 0, az: -9, halfW: 2.9, base: 4.7, lookY: 2.9, hint: '상담 데스크 — 카톡 오픈채팅으로 바로 연결' }
+  };
+  function spotOf(key){
+    if(SPOTS[key]) return SPOTS[key];
+    const z = ZONES_SPOT[key]; if(!z) return null;
+    const hHalf = Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov * 0.5)) * camera.aspect);
+    const fit = z.halfW / Math.tan(hHalf) * 1.02;
+    const len = Math.hypot(z.ax, z.az) || 1;
+    const d = Math.min(Math.max(z.base, fit), len * 0.94);
+    const ux = -z.ax / len, uz = -z.az / len;
+    return { x: z.ax + ux * d, z: z.az + uz * d, lookX: z.ax, lookY: z.lookY, lookZ: z.az, hint: z.hint };
+  }
   const lookYaw = (px, pz, tx, tz) => Math.atan2(-(tx - px), -(tz - pz));
   const lookPitch = (px, pz, tx, ty, tz) => Math.atan2(ty - EYE, Math.hypot(tx - px, tz - pz));
 
   function setSpot(name, instant){
-    const s = SPOTS[name]; if(!s) return;
+    const s = spotOf(name); if(!s) return;
     const ty = lookYaw(s.x, s.z, s.lookX, s.lookZ);
     const tp = lookPitch(s.x, s.z, s.lookX, s.lookY, s.lookZ);
     closeCard(false);
