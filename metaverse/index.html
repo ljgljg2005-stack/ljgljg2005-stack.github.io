@@ -290,14 +290,6 @@
   })();
 </script>
 
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js"
-  }
-}
-</script>
-
 <script type="module">
 const LINKS = {
   kakao: 'https://open.kakao.com/o/shDgTlXi',
@@ -465,7 +457,9 @@ const fontsReady = (document.fonts && document.fonts.load)
     ])
   : Promise.resolve();
 
-fontsReady.then(()=>import('three')).then((THREE)=>{
+const THREE_URL = 'https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.module.js';
+
+fontsReady.then(()=>import(THREE_URL)).then((THREE)=>{
   try{ boot(THREE); }
   catch(err){ console.error(err); showFallback('boot failed: ' + err); }
 }).catch((err)=>{ showFallback('three load failed: ' + err); });
