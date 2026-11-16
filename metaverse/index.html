@@ -1025,20 +1025,22 @@ function boot(THREE){
   const joy = { x: 0, y: 0, active: false, id: null };
 
   const SPOTS = {
-    entrance: { x: 0, z: 10.6, lookX: 0, lookZ: 0, hint: '가이드를 따라 부스를 둘러보세요' },
-    curriculum: { x: -4.7, z: -0.7, lookX: -8.4, lookZ: -3.2, hint: '커리큘럼 4단계 — 부스를 눌러 보세요' },
-    cases: { x: 4.7, z: -0.7, lookX: 8.4, lookZ: -3.2, hint: '유튜브 · 인포크 · 스마트스토어로 바로 이동' },
-    desk: { x: 0, z: -4.3, lookX: 0, lookZ: -9, hint: '상담 데스크 — 카톡 오픈채팅으로 바로 연결' }
+    entrance: { x: 0, z: 10.6, lookX: 0, lookY: 2.2, lookZ: 0, hint: '가이드를 따라 부스를 둘러보세요' },
+    curriculum: { x: -2.6, z: -1.0, lookX: -8.4, lookY: 2.6, lookZ: -3.2, hint: '커리큘럼 4단계 — 부스를 눌러 보세요' },
+    cases: { x: 2.6, z: -1.0, lookX: 8.4, lookY: 2.9, lookZ: -3.2, hint: '유튜브 · 인포크 · 스마트스토어로 바로 이동' },
+    desk: { x: 0, z: -4.3, lookX: 0, lookY: 2.9, lookZ: -9, hint: '상담 데스크 — 카톡 오픈채팅으로 바로 연결' }
   };
   const lookYaw = (px, pz, tx, tz) => Math.atan2(-(tx - px), -(tz - pz));
+  const lookPitch = (px, pz, tx, ty, tz) => Math.atan2(ty - EYE, Math.hypot(tx - px, tz - pz));
 
   function setSpot(name, instant){
     const s = SPOTS[name]; if(!s) return;
     const ty = lookYaw(s.x, s.z, s.lookX, s.lookZ);
+    const tp = lookPitch(s.x, s.z, s.lookX, s.lookY, s.lookZ);
     closeCard(false);
     const apply = ()=>{
       player.x = s.x; player.z = s.z;
-      yaw = yawT = ty; pitch = pitchT = -0.03;
+      yaw = yawT = ty; pitch = pitchT = tp;
       camera.position.set(player.x, EYE, player.z);
       camera.rotation.set(pitch, yaw, 0);
       el.hintText.innerHTML = s.hint;
