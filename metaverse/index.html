@@ -1292,7 +1292,7 @@ function boot(THREE){
     let near = null, nearD = 99;
     for(const z of zones){
       const d = Math.hypot(player.x - z.p.x, player.z - z.p.z);
-      if(d < 5.2) suppressed.delete(z.key);
+      if(d > 5.2) suppressed.delete(z.key);
       if(d < nearD){ nearD = d; near = z; }
     }
     const showNear = near && nearD < 4.6 && !api.cardOpen;
