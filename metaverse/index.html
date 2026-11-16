@@ -698,7 +698,7 @@ function boot(THREE){
   })();
 
   /* ── hologram sign ── */
-  const holo = new THREE.Group(); holo.position.set(0, 4.9, 0); scene.add(holo);
+  const holo = new THREE.Group(); holo.position.set(0, 5.15, 0); scene.add(holo);
   const holoTex = canvasTex(1024, 256, (ctx, w, h)=>{
     ctx.clearRect(0, 0, w, h);
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
@@ -733,7 +733,7 @@ function boot(THREE){
   beam.position.y = -1.4; beam.rotation.x = Math.PI; holo.add(beam);
 
   /* ── guide robot ── */
-  const guide = new THREE.Group(); guide.position.set(-1.3, 0, 3.4); guide.scale.setScalar(0.95); scene.add(guide);
+  const guide = new THREE.Group(); guide.position.set(-2.1, 0, 3.4); guide.scale.setScalar(0.95); scene.add(guide);
   const metal = new THREE.MeshStandardMaterial({ color: 0x27425f, roughness: .34, metalness: .72,
     emissive: new THREE.Color(0x0e2c46), emissiveIntensity: 1, envMapIntensity: 1.3 });
   const metalLite = new THREE.MeshStandardMaterial({ color: 0x3a5f83, roughness: .3, metalness: .68,
@@ -871,7 +871,7 @@ function boot(THREE){
     ctx.fillText('눌러서 실제 채널로 바로 이동하세요', 42, 192);
   });
   const caseHead = new THREE.Mesh(new THREE.PlaneGeometry(5.4, 1.27), NEON(caseHeadTex));
-  caseHead.position.set(0, 4.32, 0.06); cases.add(caseHead);
+  caseHead.position.set(0, 5.05, 0.06); cases.add(caseHead);
   const caseBase = new THREE.Mesh(new THREE.BoxGeometry(7.0, 0.16, 1.5),
     new THREE.MeshStandardMaterial({ color: 0x101f33, roughness: .35, metalness: .9, envMapIntensity: 1.1 }));
   caseBase.position.set(0, 0.08, 0.1); cases.add(caseBase);
@@ -946,10 +946,10 @@ function boot(THREE){
     ctx.fillText('카톡 오픈채팅으로 바로 연결됩니다.', 46, 344);
   });
   const deskBoard = new THREE.Mesh(new THREE.PlaneGeometry(5.6, 2.45), NEON(deskTex));
-  deskBoard.position.set(0, 2.78, -1.15); desk.add(deskBoard);
-  const boardFrameT = neonBar(5.75, 0.045, 0.045, C.gold, .85); boardFrameT.position.set(0, 4.02, -1.13); desk.add(boardFrameT);
-  const boardFrameB = boardFrameT.clone(); boardFrameB.position.y = 1.54; desk.add(boardFrameB);
-  const deskGlow = makeGlow(0xFBBF24, 7.4, .25); deskGlow.position.set(0, 2.75, -1.5); desk.add(deskGlow);
+  deskBoard.position.set(0, 3.05, -1.15); desk.add(deskBoard);
+  const boardFrameT = neonBar(5.75, 0.045, 0.045, C.gold, .85); boardFrameT.position.set(0, 4.29, -1.13); desk.add(boardFrameT);
+  const boardFrameB = boardFrameT.clone(); boardFrameB.position.y = 1.81; desk.add(boardFrameB);
+  const deskGlow = makeGlow(0xFBBF24, 7.4, .25); deskGlow.position.set(0, 3.02, -1.5); desk.add(deskGlow);
 
   const deskTop = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.14, 1.5),
     new THREE.MeshStandardMaterial({ color: 0x16293e, roughness: .3, metalness: .9, envMapIntensity: 1.2 }));
@@ -1225,7 +1225,7 @@ function boot(THREE){
 
     // hologram
     if(!reduceMotion){
-      holo.position.y = 4.9 + Math.sin(t * 0.9) * 0.11;
+      holo.position.y = 5.15 + Math.sin(t * 0.9) * 0.11;
       ringH1.rotation.z = t * 0.35; ringH2.rotation.z = -t * 0.24;
       holoMat.opacity = 0.9 + Math.sin(t * 2.4) * 0.06;
       orn.rotation.y = t * 0.5; orn.rotation.x = t * 0.22;
