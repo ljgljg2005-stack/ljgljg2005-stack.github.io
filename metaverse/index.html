@@ -487,7 +487,7 @@ function boot(THREE){
 
   function camFovFor(w, h){
     if(!COMPACT && w >= 820) return 62;
-    return h > w ? 80 : 74;
+    return h > w ? 86 : 76;
   }
   const camera = new THREE.PerspectiveCamera(camFovFor(innerWidth, innerHeight), innerWidth / innerHeight, 0.06, 90);
   camera.rotation.order = 'YXZ';
@@ -1048,7 +1048,7 @@ function boot(THREE){
     const hHalf = Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov * 0.5)) * camera.aspect);
     const fit = z.halfW / Math.tan(hHalf) * 1.02;
     const len = Math.hypot(z.ax, z.az) || 1;
-    const d = Math.min(Math.max(z.base, fit), len * 0.94);
+    const d = Math.min(Math.max(z.base, fit), len * 0.99);
     const ux = -z.ax / len, uz = -z.az / len;
     return { x: z.ax + ux * d, z: z.az + uz * d, lookX: z.ax, lookY: z.lookY, lookZ: z.az, hint: z.hint };
   }
