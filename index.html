@@ -244,21 +244,30 @@
   }
   .contact-inner{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(24px,4vw,44px);align-items:center}
   .contact h2{margin-top:12px}
-  .cid{
-    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-    margin-top:22px;padding:14px 18px;border-radius:14px;
-    background:rgba(0,0,0,.34);border:1px solid rgba(255,255,255,.14);
+  .btn-block{width:100%;margin-top:22px;padding:17px 24px;font-size:16px;border-radius:14px}
+  .link-copy{
+    display:inline-flex;align-items:center;gap:4px;
+    font:inherit;font-size:12.5px;font-weight:800;color:#ffb4cd;
+    background:none;border:0;border-bottom:1px dashed rgba(255,180,205,.55);
+    padding:0 0 1px;cursor:pointer;transition:color .2s,border-color .2s;
   }
-  .cid .lbl{font-size:12.5px;font-weight:800;letter-spacing:.1em;color:#ffd24a}
-  .cid .val{
+  .link-copy:hover{color:#fff;border-bottom-color:rgba(255,255,255,.8)}
+  .link-copy.done{color:#86efac;border-bottom-color:rgba(134,239,172,.7)}
+  .micro-copy{margin-top:10px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .micro-copy b{color:#ffc2d8;font-weight:800;letter-spacing:.01em}
+  .fallback{
+    display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+    margin-top:18px;padding:12px 16px;border-radius:12px;
+    background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.13);
+    font-size:12.5px;color:#c3b3bc;
+  }
+  .fallback .dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 10px #4ade80;flex:none}
+  .fallback .link-copy{margin-left:2px}
+  .fallback .val{
     font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
-    font-size:clamp(18px,2.4vw,23px);font-weight:700;letter-spacing:.02em;color:#fff;
+    font-size:15px;font-weight:700;letter-spacing:.02em;color:#fff;
   }
-  .cid .dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 12px #4ade80;flex:none}
-  .copy-btn{width:100%;margin-top:16px;padding:17px 24px;font-size:16px;border-radius:14px}
-  [data-copy]{min-width:250px}
-  .copy-btn.done{background:linear-gradient(135deg,#16a34a,#22c55e);box-shadow:0 12px 30px -10px rgba(34,197,94,.8)}
-  .hint{margin:12px 0 0;font-size:12.5px;color:#b9a6b6;text-align:center}
+  .hint{margin:12px 0 0;font-size:12.5px;color:#b9a6b6;line-height:1.7}
 
   .steps{
     list-style:none;margin:0;padding:22px 22px 8px;border-radius:18px;
@@ -318,6 +327,8 @@
   }
   @media (max-width:680px){
     .wrap{padding:0 18px}
+    .btn-block{margin-top:18px;font-size:15.5px}
+    .fallback{font-size:12px;padding:11px 13px;gap:7px}
     h1{letter-spacing:-.035em}
     .grid-4{grid-template-columns:1fr;gap:12px;margin-top:26px}
     .step{padding:22px 20px}
@@ -326,7 +337,7 @@
     .btn{flex:1 1 100%;padding:16px 18px}
     .badge{font-size:12px;padding:7px 13px}
     .contact-card{padding:26px 20px;border-radius:20px}
-    .cid{padding:12px 14px;gap:10px}
+
     .hero-visual svg{max-width:250px}
     .foot{flex-direction:column;align-items:flex-start;gap:12px}
     .top-cta{padding:8px 13px;font-size:12.5px}
@@ -349,9 +360,9 @@
       </svg>
       숏폼커머스교육
     </a>
-    <a class="top-cta" href="#contact">
+    <a class="top-cta" href="https://open.kakao.com/o/shDgTlXi" target="_blank" rel="noopener noreferrer">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.3 9 9 0 0 1-3.9-.9L3 20.5l1.6-4.6a8.1 8.1 0 0 1-1.1-4A8.4 8.4 0 0 1 12 3.5a8.4 8.4 0 0 1 9 8z"/></svg>
-      <span>카톡 문의</span>
+      <span>카톡 상담</span>
     </a>
   </div>
 </header>
@@ -370,16 +381,19 @@
           잘하실 때까지 무한 AS해 드립니다
         </p>
         <div class="cta-row">
-          <button class="btn btn-primary" type="button" data-copy>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.4"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-            카톡 ID 복사: soojibi
-          </button>
+          <a class="btn btn-primary" href="https://open.kakao.com/o/shDgTlXi" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.3 9 9 0 0 1-3.9-.9L3 20.5l1.6-4.6a8.1 8.1 0 0 1-1.1-4A8.4 8.4 0 0 1 12 3.5a8.4 8.4 0 0 1 9 8z"/></svg>
+            카톡으로 바로 상담하기
+          </a>
           <a class="btn btn-ghost" href="#cases">
             실제 교육 사례 보기
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
         </div>
         <p class="micro">왕초보 환영<span>·</span>1:1 맞춤 진행<span>·</span>실전 위주 수업</p>
+        <p class="micro micro-copy">오픈채팅이 안 열리면 카톡 ID <b>soojibi</b>
+          <button class="link-copy" type="button" data-copy>복사하기</button>
+        </p>
       </div>
 
       <div class="hero-visual" aria-hidden="true">
@@ -536,47 +550,34 @@
         <div class="contact-inner">
           <div>
             <span class="kicker">KakaoTalk</span>
-            <h2>과외 문의는<br>카카오톡으로 받습니다</h2>
-            <p class="sub" style="color:#d9c7d3">지금 상황에 맞춰 무엇부터 시작하면 좋을지 먼저 이야기해 드립니다. 부담 없이 인사만 남기셔도 됩니다.</p>
-            <div class="cid">
+            <h2>과외 문의는<br>카카오톡 오픈채팅으로 받습니다</h2>
+            <p class="sub" style="color:#d9c7d3">아래 버튼을 누르면 상담 오픈채팅방이 바로 열립니다. 지금 상황에 맞춰 무엇부터 시작하면 좋을지 먼저 이야기해 드립니다. 부담 없이 인사만 남기셔도 됩니다.</p>
+            <a class="btn btn-primary btn-block" href="https://open.kakao.com/o/shDgTlXi" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.3 9 9 0 0 1-3.9-.9L3 20.5l1.6-4.6a8.1 8.1 0 0 1-1.1-4A8.4 8.4 0 0 1 12 3.5a8.4 8.4 0 0 1 9 8z"/></svg>
+              카톡으로 바로 상담하기
+            </a>
+            <div class="fallback">
               <span class="dot" aria-hidden="true"></span>
-              <span class="lbl">카톡 ID</span>
+              <span>오픈채팅이 안 열리면 카톡 ID</span>
               <span class="val" id="kakaoId">soojibi</span>
+              <button class="link-copy" type="button" data-copy>복사</button>
             </div>
-            <button class="btn btn-primary copy-btn" type="button" data-copy>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.4"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
-              카톡 ID 복사: soojibi
-            </button>
-            <p class="hint">버튼을 누르면 ID가 복사됩니다. 카카오톡 친구 검색창에 붙여넣어 주세요.</p>
+            <p class="hint">복사한 ID를 카카오톡 친구 검색창에 붙여넣고 1:1 채팅으로 문의하셔도 됩니다.</p>
           </div>
 
           <ol class="steps">
             <li>
               <span class="n">1</span>
               <div>
-                <b>ID 복사하기</b>
-                <span>위 버튼을 누르면 ID가 복사됩니다.</span>
+                <b>오픈채팅 열기</b>
+                <span>위 버튼을 누르면 카카오톡 상담 오픈채팅방이 바로 열립니다.</span>
               </div>
             </li>
             <li>
               <span class="n">2</span>
               <div>
-                <b>카카오톡 친구 검색</b>
-                <span>카카오톡 → 친구 → 우측 상단 돋보기에 붙여넣기 후 검색합니다.</span>
-              </div>
-            </li>
-            <li>
-              <span class="n">3</span>
-              <div>
-                <b>친구 추가</b>
-                <span>프로필에서 <b class="ib">친구 추가</b>를 누릅니다.</span>
-              </div>
-            </li>
-            <li>
-              <span class="n">4</span>
-              <div>
-                <b>1:1 채팅으로 문의</b>
-                <span>"과외 문의"라고 한 줄만 남겨 주세요. 판매 중인 상품이나 채널을 알려 주시면 더 정확히 안내드립니다.</span>
+                <b>한 줄만 남기기</b>
+                <span><b class="ib">"과외 문의"</b>라고 남겨 주세요. 판매 중인 상품이나 운영 중인 채널을 알려 주시면 더 정확히 안내드립니다.</span>
               </div>
             </li>
           </ol>
